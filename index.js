@@ -29,11 +29,12 @@ class SHACLValidator {
    * Validates the provided data graph against the provided shapes graph
    *
    * @param {DatasetCore} data - Dataset containing the data to validate
+   * @param {string} group - optional SHACL PropertyGroup for filtering shapes
    * @return {ValidationReport} - Result of the validation
    */
-  validate (data) {
+  validate (data, group) {
     this.$data = clownface({ dataset: data, factory: this.factory })
-    this.validationEngine.validateAll(this.$data)
+    this.validationEngine.validateAll(this.$data, group)
     return this.validationEngine.getReport()
   }
 

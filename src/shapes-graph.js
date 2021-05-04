@@ -214,6 +214,7 @@ class Shape {
 
     this.deactivated = this.shapeNodePointer.out(sh.deactivated).value === 'true'
     this.path = this.shapeNodePointer.out(sh.path).term
+    this.group = this.shapeNodePointer.out(sh.group).term
     this._pathObject = undefined
     this.shapeNode = shapeNode
     this.constraints = []
