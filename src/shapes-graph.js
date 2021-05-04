@@ -215,11 +215,13 @@ class Shape {
     this.deactivated = this.shapeNodePointer.out(sh.deactivated).value === 'true'
     this.path = this.shapeNodePointer.out(sh.path).term
     this.group = this.shapeNodePointer.out(sh.group).term
-
-    if (this.context.group && this.path && this.group && this.group.value != this.context.group) {
+    
+    // If shape doesn't have any group or the group is different from this.context.group,
+    // deactivate it
+    if (this.context.group && this.path && ((this.group && this.group.value != this.context.group) || !this.group)) {
       this.deactivated = true;
     }
-    
+
     this._pathObject = undefined
     this.shapeNode = shapeNode
     this.constraints = []
