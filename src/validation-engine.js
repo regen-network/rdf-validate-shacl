@@ -139,9 +139,8 @@ class ValidationEngine {
    * Validates the data graph against the shapes graph
    *
    * @param {Clownface} dataGraph
-   * @param {string} group (optional)
    */
-  validateAll (dataGraph, group) {
+  validateAll (dataGraph) {
     if (this.maxErrorsReached()) {
       return true
     }
@@ -154,7 +153,7 @@ class ValidationEngine {
       for (const shape of shapes) {
         const focusNodes = shape.getTargetNodes(dataGraph)
         for (const focusNode of focusNodes) {
-          if (this.validateNodeAgainstShape(focusNode, shape, dataGraph, group)) {
+          if (this.validateNodeAgainstShape(focusNode, shape, dataGraph)) {
             foundError = true
           }
         }
@@ -169,26 +168,26 @@ class ValidationEngine {
   /**
    * Returns true if any violation has been found
    */
-  validateNodeAgainstShape (focusNode, shape, dataGraph, group) {
+  validateNodeAgainstShape (focusNode, shape, dataGraph) {
     if (this.maxErrorsReached()) {
       return true
     }
 
-    if (shape.deactivated || (group && shape.group && shape.group.value !== group)) {
+    if (shape.deactivated) {
       return false
     }
 
     const valueNodes = shape.getValueNodes(focusNode, dataGraph)
     let errorFound = false
     for (const constraint of shape.constraints) {
-      if (this.validateNodeAgainstConstraint(focusNode, valueNodes, constraint, dataGraph, group)) {
+      if (this.validateNodeAgainstConstraint(focusNode, valueNodes, constraint, dataGraph)) {
         errorFound = true
       }
     }
     return errorFound
   }
 
-  validateNodeAgainstConstraint (focusNode, valueNodes, constraint, dataGraph, group) {
+  validateNodeAgainstConstraint (focusNode, valueNodes, constraint, dataGraph) {
     const { sh } = this.context.ns
 
     if (this.maxErrorsReached()) {
@@ -198,7 +197,7 @@ class ValidationEngine {
     if (sh.PropertyConstraintComponent.equals(constraint.component.node)) {
       let errorFound = false
       for (const valueNode of valueNodes) {
-        if (this.validateNodeAgainstShape(valueNode, this.context.shapesGraph.getShape(constraint.paramValue), dataGraph, group)) {
+        if (this.validateNodeAgainstShape(valueNode, this.context.shapesGraph.getShape(constraint.paramValue), dataGraph)) {
           errorFound = true
         }
       }

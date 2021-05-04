@@ -19,6 +19,7 @@ class SHACLValidator {
 
     this.factory = options.factory || require('@rdfjs/dataset')
     this.ns = prepareNamespaces(this.factory)
+    this.group = options.group
     this.loadShapes(shapes)
     this.validationEngine = new ValidationEngine(this, options)
 
@@ -29,12 +30,11 @@ class SHACLValidator {
    * Validates the provided data graph against the provided shapes graph
    *
    * @param {DatasetCore} data - Dataset containing the data to validate
-   * @param {string} group - optional SHACL PropertyGroup for filtering shapes
    * @return {ValidationReport} - Result of the validation
    */
-  validate (data, group) {
+  validate (data) {
     this.$data = clownface({ dataset: data, factory: this.factory })
-    this.validationEngine.validateAll(this.$data, group)
+    this.validationEngine.validateAll(this.$data)
     return this.validationEngine.getReport()
   }
 
