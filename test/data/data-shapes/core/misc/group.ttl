@@ -1,0 +1,35 @@
+@prefix ex: <http://datashapes.org/sh/tests/core/misc/group.test#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:Instance
+  rdf:type ex:Test ;
+  ex:path1 "path1" ;
+.
+
+ex:TestShape
+  rdf:type sh:NodeShape ;
+  sh:targetClass ex:Test ;
+  sh:property [
+    sh:path ex:path1 ;
+    sh:minCount 1 ;
+    sh:group ex:SomeGroup ;
+  ] ;
+  sh:property [
+    sh:path ex:path2 ;
+    sh:minCount 1 ;
+    sh:group ex:SomeOtherGroup ;
+  ] ;
+  sh:property [
+    sh:path ex:path3 ;
+    sh:minCount 1 ;
+  ]
+.
+
+ex:SomeGroup
+	a sh:PropertyGroup ;
+.
+
+ex:SomeOtherGroup
+	a sh:PropertyGroup ;
+.

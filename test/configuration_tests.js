@@ -21,3 +21,20 @@ describe('configuration', () => {
     assert.strictEqual(report2.results.length, 1)
   })
 })
+
+describe('configuration', () => {
+  it('only validates against property shapes with given group', async () => {
+    const dataFile = path.join(__dirname, '/data/data-shapes/core/misc/group.ttl')
+    const data = await loadDataset(dataFile)
+    const shapes = data
+
+    const validator1 = new SHACLValidator(shapes)
+    const report1 = validator1.validate(data)
+    assert.strictEqual(report1.conforms, false)
+    assert.strictEqual(report1.results.length, 2)
+
+    const validator2 = new SHACLValidator(shapes, { group: "http://datashapes.org/sh/tests/core/misc/group.test#SomeGroup" })
+    const report2 = validator2.validate(data)
+    assert.strictEqual(report2.conforms, true)
+  })
+})
